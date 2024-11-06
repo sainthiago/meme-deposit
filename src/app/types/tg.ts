@@ -1,15 +1,15 @@
-interface TelegramResponse {
+export interface TelegramResponse {
   ok: boolean;
   result: Update[];
 }
 
-interface Update {
+export interface Update {
   update_id: number;
   my_chat_member?: MyChatMember;
   message?: Message;
 }
 
-interface MyChatMember {
+export interface MyChatMember {
   chat: Chat;
   from: User;
   date: number;
@@ -17,7 +17,7 @@ interface MyChatMember {
   new_chat_member: ChatMember;
 }
 
-interface Message {
+export interface Message {
   message_id: number;
   from: User;
   chat: Chat;
@@ -25,14 +25,14 @@ interface Message {
   photo: Photo[];
 }
 
-interface Chat {
+export interface Chat {
   id: number;
   title: string;
   username: string;
   type: string;
 }
 
-interface User {
+export interface User {
   id: number;
   is_bot: boolean;
   first_name: string;
@@ -41,7 +41,7 @@ interface User {
   last_name?: string;
 }
 
-interface ChatMember {
+export interface ChatMember {
   user: User;
   status: string;
   can_be_edited?: boolean;
@@ -61,7 +61,7 @@ interface ChatMember {
   can_manage_voice_chats?: boolean;
 }
 
-interface Photo {
+export interface Photo {
   file_id: string;
   file_unique_id: string;
   file_size: number;

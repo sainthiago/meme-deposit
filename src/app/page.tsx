@@ -17,6 +17,7 @@ const Home = async () => {
     }
 
     const text = await response.text();
+
     if (!text) {
       throw new Error("Response body is empty");
     }
