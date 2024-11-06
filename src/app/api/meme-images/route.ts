@@ -11,6 +11,7 @@ async function fetchTelegramUpdates(): Promise<Update[]> {
   const response = await fetch(
     `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates`
   );
+
   const data = await response.json();
 
   return data.result;
