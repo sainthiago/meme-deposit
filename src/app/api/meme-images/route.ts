@@ -36,26 +36,22 @@ async function fetchImagesFromTelegram(): Promise<string[]> {
     })
     .reverse();
 
-  console.log("Sfhjdghfjsk2223j2kj23j3k2j3k2jk3dh", images);
-
   return images;
 }
 
 async function getFileUrl(fileId: string) {
-  console.log({ fileId });
   const response = await fetch(
     `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileId}`
   );
   const data = await response.json();
 
-  console.log({ data });
   const filePath = data.result.file_path;
   return `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${filePath}`;
 }
 
 export async function fetchImageUrls() {
   const images = await fetchImagesFromTelegram();
-  console.log({ images });
+
   const imageUrls = await Promise.all(
     images.map(async (image) => {
       const url = await getFileUrl(image);
@@ -63,7 +59,6 @@ export async function fetchImageUrls() {
     })
   );
 
-  console.log({ imageUrls });
   return imageUrls;
 }
 
