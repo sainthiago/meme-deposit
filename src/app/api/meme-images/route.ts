@@ -1,5 +1,6 @@
+import { Update } from "@/app/types/tg";
 import dotenv from "dotenv";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 dotenv.config(); // Load environment variables
 
@@ -22,11 +23,13 @@ async function fetchImagesFromTelegram(): Promise<string[]> {
 
   const images = updates
     .filter(
-      (update: any) =>
+      (update) =>
         update?.message?.chat?.id === TELEGRAM_CHAT_ID &&
         update?.message?.photo?.length > 0
     )
-    .flatMap((update: any) => {
+    .flatMap((update) => {
+      if (!update.message) return []; // Ensure message is defined
+
       const lastPhoto = update.message.photo.slice(-1)[0]; // Get the last photo
       if (lastPhoto && !seenFileIds.has(lastPhoto.file_id)) {
         seenFileIds.add(lastPhoto.file_id); // Add to seen set
@@ -49,7 +52,8 @@ async function getFileUrl(fileId: string) {
   return `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${filePath}`;
 }
 
-export async function fetchImageUrls() {
+// Remove the export from fetchImageUrls
+async function fetchImageUrls() {
   const images = await fetchImagesFromTelegram();
 
   const imageUrls = await Promise.all(
@@ -62,7 +66,8 @@ export async function fetchImageUrls() {
   return imageUrls;
 }
 
-export async function GET(_req: NextRequest): Promise<NextResponse> {
+// Ensure GET is the default export
+export const GET = async (): Promise<NextResponse> => {
   try {
     const images = await fetchImageUrls();
 
@@ -71,4 +76,4 @@ export async function GET(_req: NextRequest): Promise<NextResponse> {
     const msg = error instanceof Error ? error.message : String(error);
     return NextResponse.json({ msg, error }, { status: 401 });
   }
-}
+};
